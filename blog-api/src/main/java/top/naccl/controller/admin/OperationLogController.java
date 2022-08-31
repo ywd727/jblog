@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import top.naccl.service.OperationLogService;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-日志管理-操作日志")
 public class OperationLogController {
 	@Autowired
 	OperationLogService operationLogService;
@@ -32,6 +35,7 @@ public class OperationLogController {
 	 * @return
 	 */
 	@GetMapping("/operationLogs")
+	@ApiOperation("获取操作日志的分页列表")
 	public Result operationLogs(@RequestParam(defaultValue = "") String[] date,
 	                            @RequestParam(defaultValue = "1") Integer pageNum,
 	                            @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -54,6 +58,7 @@ public class OperationLogController {
 	 * @return
 	 */
 	@DeleteMapping("/operationLog")
+	@ApiOperation("根据id删除操作日志")
 	public Result delete(@RequestParam Long id) {
 		operationLogService.deleteOperationLogById(id);
 		return Result.ok("删除成功");

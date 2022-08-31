@@ -1,5 +1,7 @@
 package top.naccl.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,7 @@ import java.util.Map;
  */
 
 @RestController
+@Api(tags = "front-站点相关-基础信息设置（头像等）")
 public class IndexController {
 	@Autowired
 	SiteSettingService siteSettingService;
@@ -39,6 +42,7 @@ public class IndexController {
 	 * @return
 	 */
 	@GetMapping("/site")
+	@ApiOperation("获取站点配置信息（最新推荐博客、分类列表、标签云、随机博客）")
 	public Result site() {
 		Map<String, Object> map = siteSettingService.getSiteInfo();
 		List<NewBlog> newBlogList = blogService.getNewBlogListByIsPublished();

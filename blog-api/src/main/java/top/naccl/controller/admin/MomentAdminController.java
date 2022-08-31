@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/admin")
+@Api("back-博客管理-动态管理")
 public class MomentAdminController {
 	@Autowired
 	MomentService momentService;
@@ -37,6 +40,7 @@ public class MomentAdminController {
 	 * @return
 	 */
 	@GetMapping("/moments")
+	@ApiOperation("查询出动态分页列表")
 	public Result moments(@RequestParam(defaultValue = "1") Integer pageNum,
 	                      @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "create_time desc";
@@ -54,6 +58,7 @@ public class MomentAdminController {
 	 */
 	@OperationLogger("更新动态公开状态")
 	@PutMapping("/moment/published")
+	@ApiOperation("更新动态的公开状态")
 	public Result updatePublished(@RequestParam Long id, @RequestParam Boolean published) {
 		momentService.updateMomentPublishedById(id, published);
 		return Result.ok("操作成功");
@@ -66,6 +71,7 @@ public class MomentAdminController {
 	 * @return
 	 */
 	@GetMapping("/moment")
+	@ApiOperation("根据id查询动态")
 	public Result moment(@RequestParam Long id) {
 		return Result.ok("获取成功", momentService.getMomentById(id));
 	}
@@ -78,6 +84,7 @@ public class MomentAdminController {
 	 */
 	@OperationLogger("删除动态")
 	@DeleteMapping("/moment")
+	@ApiOperation("根据id删除动态")
 	public Result deleteMoment(@RequestParam Long id) {
 		momentService.deleteMomentById(id);
 		return Result.ok("删除成功");
@@ -91,6 +98,7 @@ public class MomentAdminController {
 	 */
 	@OperationLogger("发布动态")
 	@PostMapping("/moment")
+	@ApiOperation("新增动态")
 	public Result saveMoment(@RequestBody Moment moment) {
 		if (moment.getCreateTime() == null) {
 			moment.setCreateTime(new Date());
@@ -107,6 +115,7 @@ public class MomentAdminController {
 	 */
 	@OperationLogger("更新动态")
 	@PutMapping("/moment")
+	@ApiOperation("修改动态")
 	public Result updateMoment(@RequestBody Moment moment) {
 		if (moment.getCreateTime() == null) {
 			moment.setCreateTime(new Date());

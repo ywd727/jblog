@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-页面管理-友链管理")
 public class FriendAdminController {
 	@Autowired
 	FriendService friendService;
@@ -37,6 +40,7 @@ public class FriendAdminController {
 	 * @return
 	 */
 	@GetMapping("/friends")
+	@ApiOperation("获取友链的分页列表")
 	public Result friends(@RequestParam(defaultValue = "1") Integer pageNum,
 	                      @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "create_time asc";
@@ -54,6 +58,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("更新友链公开状态")
 	@PutMapping("/friend/published")
+	@ApiOperation("更新友链的公开状态")
 	public Result updatePublished(@RequestParam Long id, @RequestParam Boolean published) {
 		friendService.updateFriendPublishedById(id, published);
 		return Result.ok("操作成功");
@@ -67,6 +72,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("添加友链")
 	@PostMapping("/friend")
+	@ApiOperation("添加友链")
 	public Result saveFriend(@RequestBody Friend friend) {
 		friendService.saveFriend(friend);
 		return Result.ok("添加成功");
@@ -80,6 +86,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("更新友链")
 	@PutMapping("/friend")
+	@ApiOperation("更新友链")
 	public Result updateFriend(@RequestBody top.naccl.model.dto.Friend friend) {
 		friendService.updateFriend(friend);
 		return Result.ok("修改成功");
@@ -93,6 +100,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("删除友链")
 	@DeleteMapping("/friend")
+	@ApiOperation("根据id删除友链")
 	public Result deleteFriend(@RequestParam Long id) {
 		friendService.deleteFriend(id);
 		return Result.ok("删除成功");
@@ -104,6 +112,7 @@ public class FriendAdminController {
 	 * @return
 	 */
 	@GetMapping("/friendInfo")
+	@ApiOperation("获取友链的页面信息")
 	public Result friendInfo() {
 		return Result.ok("请求成功", friendService.getFriendInfo(false, false));
 	}
@@ -116,6 +125,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("修改友链页面评论开放状态")
 	@PutMapping("/friendInfo/commentEnabled")
+	@ApiOperation("修改友链页面评论的开放状态")
 	public Result updateFriendInfoCommentEnabled(@RequestParam Boolean commentEnabled) {
 		friendService.updateFriendInfoCommentEnabled(commentEnabled);
 		return Result.ok("修改成功");
@@ -129,6 +139,7 @@ public class FriendAdminController {
 	 */
 	@OperationLogger("修改友链页面信息")
 	@PutMapping("/friendInfo/content")
+	@ApiOperation("修改友链页面信息")
 	public Result updateFriendInfoContent(@RequestBody Map map) {
 		friendService.updateFriendInfoContent((String) map.get("content"));
 		return Result.ok("修改成功");

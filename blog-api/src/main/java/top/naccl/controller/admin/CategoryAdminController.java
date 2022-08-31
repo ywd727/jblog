@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import top.naccl.util.StringUtils;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-博客管理-博客分类接口")
 public class CategoryAdminController {
 	@Autowired
 	BlogService blogService;
@@ -39,6 +42,7 @@ public class CategoryAdminController {
 	 * @return
 	 */
 	@GetMapping("/categories")
+	@ApiOperation("博客分类-获取分类列表")
 	public Result categories(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "id desc";
 		PageHelper.startPage(pageNum, pageSize, orderBy);
@@ -54,6 +58,7 @@ public class CategoryAdminController {
 	 */
 	@OperationLogger("添加分类")
 	@PostMapping("/category")
+	@ApiOperation("博客分类-添加分类")
 	public Result saveCategory(@RequestBody Category category) {
 		return getResult(category, "save");
 	}
@@ -66,6 +71,7 @@ public class CategoryAdminController {
 	 */
 	@OperationLogger("修改分类")
 	@PutMapping("/category")
+	@ApiOperation("博客分类-修改分类")
 	public Result updateCategory(@RequestBody Category category) {
 		return getResult(category, "update");
 	}
@@ -104,6 +110,7 @@ public class CategoryAdminController {
 	 */
 	@OperationLogger("删除分类")
 	@DeleteMapping("/category")
+	@ApiOperation("博客分类-删除分类")
 	public Result delete(@RequestParam Long id) {
 		//删除存在博客关联的分类后，该博客的查询会出异常
 		int num = blogService.countBlogByCategoryId(id);

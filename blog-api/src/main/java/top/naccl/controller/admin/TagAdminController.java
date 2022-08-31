@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import top.naccl.util.StringUtils;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-博客管理-博客标签")
 public class TagAdminController {
 	@Autowired
 	BlogService blogService;
@@ -39,6 +42,7 @@ public class TagAdminController {
 	 * @return
 	 */
 	@GetMapping("/tags")
+	@ApiOperation("获取博客标签的分页列表")
 	public Result tags(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
 		String orderBy = "id desc";
 		PageHelper.startPage(pageNum, pageSize, orderBy);
@@ -54,6 +58,7 @@ public class TagAdminController {
 	 */
 	@OperationLogger("添加标签")
 	@PostMapping("/tag")
+	@ApiOperation("添加标签")
 	public Result saveTag(@RequestBody Tag tag) {
 		return getResult(tag, "save");
 	}
@@ -66,6 +71,7 @@ public class TagAdminController {
 	 */
 	@OperationLogger("修改标签")
 	@PutMapping("/tag")
+	@ApiOperation("修改标签")
 	public Result updateTag(@RequestBody Tag tag) {
 		return getResult(tag, "update");
 	}
@@ -104,6 +110,7 @@ public class TagAdminController {
 	 */
 	@OperationLogger("删除标签")
 	@DeleteMapping("/tag")
+	@ApiOperation("根据id删除标签")
 	public Result delete(@RequestParam Long id) {
 		//删除存在博客关联的标签后，该博客的查询会出异常
 		int num = blogService.countBlogByTagId(id);

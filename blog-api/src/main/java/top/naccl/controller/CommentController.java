@@ -2,6 +2,8 @@ package top.naccl.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ import java.util.Map;
  * @Date: 2020-08-15
  */
 @RestController
+@Api(tags = "front-首页-博客-评论")
 public class CommentController {
 	@Autowired
 	CommentService commentService;
@@ -52,6 +55,7 @@ public class CommentController {
 	 * @return
 	 */
 	@GetMapping("/comments")
+	@ApiOperation("根据页面分类分页查询博客的评论列表")
 	public Result comments(@RequestParam Integer page,
 	                       @RequestParam(defaultValue = "") Long blogId,
 	                       @RequestParam(defaultValue = "1") Integer pageNum,
@@ -119,6 +123,7 @@ public class CommentController {
 	 */
 	@AccessLimit(seconds = 30, maxCount = 1, msg = "30秒内只能提交一次评论")
 	@PostMapping("/comment")
+	@ApiOperation("提交对博客的评论")
 	public Result postComment(@RequestBody Comment comment,
 	                          HttpServletRequest request,
 	                          @RequestHeader(value = "Authorization", defaultValue = "") String jwt) {

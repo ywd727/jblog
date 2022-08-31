@@ -1,5 +1,7 @@
 package top.naccl.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import java.util.List;
  * @Date: 2020-08-12
  */
 @RestController
+@Api(tags = "front-首页-博客")
 public class BlogController {
 	@Autowired
 	BlogService blogService;
@@ -44,6 +47,7 @@ public class BlogController {
 	 */
 	@VisitLogger(VisitBehavior.INDEX)
 	@GetMapping("/blogs")
+	@ApiOperation("根据置顶和创建时间分页获取博客简要信息列表")
 	public Result blogs(@RequestParam(defaultValue = "1") Integer pageNum) {
 		PageResult<BlogInfo> pageResult = blogService.getBlogInfoListByIsPublished(pageNum);
 		return Result.ok("请求成功", pageResult);
@@ -58,6 +62,7 @@ public class BlogController {
 	 */
 	@VisitLogger(VisitBehavior.BLOG)
 	@GetMapping("/blog")
+	@ApiOperation("根据id获取公开博客的详情信息")
 	public Result getBlog(@RequestParam Long id,
 	                      @RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
 		BlogDetail blog = blogService.getBlogByIdAndIsPublished(id);
@@ -102,6 +107,7 @@ public class BlogController {
 	 */
 	@VisitLogger(VisitBehavior.CHECK_PASSWORD)
 	@PostMapping("/checkBlogPassword")
+	@ApiOperation("校验受保护文章密码是否正确，正确则返回jwt")
 	public Result checkBlogPassword(@RequestBody BlogPassword blogPassword) {
 		String password = blogService.getBlogPassword(blogPassword.getBlogId());
 		if (password.equals(blogPassword.getPassword())) {
@@ -121,6 +127,7 @@ public class BlogController {
 	 */
 	@VisitLogger(VisitBehavior.SEARCH)
 	@GetMapping("/searchBlog")
+	@ApiOperation("根据关键字模糊查询公开博客中的内容")
 	public Result searchBlog(@RequestParam String query) {
 		//校验关键字字符串合法性
 		if (StringUtils.isEmpty(query) || StringUtils.hasSpecialChar(query) || query.trim().length() > 20) {

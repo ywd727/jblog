@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +22,7 @@ import top.naccl.service.VisitLogService;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-日志管理-访问日志")
 public class VisitLogController {
 	@Autowired
 	VisitLogService visitLogService;
@@ -34,6 +37,7 @@ public class VisitLogController {
 	 * @return
 	 */
 	@GetMapping("/visitLogs")
+	@ApiOperation("获取访问日志的分页列表")
 	public Result visitLogs(@RequestParam(defaultValue = "") String uuid,
 	                        @RequestParam(defaultValue = "") String[] date,
 	                        @RequestParam(defaultValue = "1") Integer pageNum,
@@ -57,6 +61,7 @@ public class VisitLogController {
 	 * @return
 	 */
 	@DeleteMapping("/visitLog")
+	@ApiOperation("根据id删除访问日志")
 	public Result delete(@RequestParam Long id) {
 		visitLogService.deleteVisitLogById(id);
 		return Result.ok("删除成功");

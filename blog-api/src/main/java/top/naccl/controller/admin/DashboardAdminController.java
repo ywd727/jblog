@@ -1,5 +1,7 @@
 package top.naccl.controller.admin;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-Dashboard-后台仪表盘")
 public class DashboardAdminController {
 	@Autowired
 	DashboardService dashboardService;
@@ -28,6 +31,7 @@ public class DashboardAdminController {
 	RedisService redisService;
 
 	@GetMapping("/dashboard")
+	@ApiOperation("仪表盘-获取仪表盘中的相关信息")
 	public Result dashboard() {
 		int todayPV = dashboardService.countVisitLogByToday();
 		int todayUV = redisService.countBySet(RedisKeyConstants.IDENTIFICATION_SET);

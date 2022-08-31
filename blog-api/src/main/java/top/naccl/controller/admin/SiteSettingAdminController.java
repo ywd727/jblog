@@ -1,5 +1,7 @@
 package top.naccl.controller.admin;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-页面管理-站点设置")
 public class SiteSettingAdminController {
 	@Autowired
 	SiteSettingService siteSettingService;
@@ -32,6 +35,7 @@ public class SiteSettingAdminController {
 	 * @return
 	 */
 	@GetMapping("/siteSettings")
+	@ApiOperation("获取所有站点配置信息")
 	public Result siteSettings() {
 		Map<String, List<SiteSetting>> typeMap = siteSettingService.getList();
 		return Result.ok("请求成功", typeMap);
@@ -45,6 +49,7 @@ public class SiteSettingAdminController {
 	 */
 	@OperationLogger("更新站点配置信息")
 	@PostMapping("/siteSettings")
+	@ApiOperation("更新站点配置信息")
 	public Result updateAll(@RequestBody Map<String, Object> map) {
 		List<LinkedHashMap> siteSettings = (List<LinkedHashMap>) map.get("settings");
 		List<Integer> deleteIds = (List<Integer>) map.get("deleteIds");
@@ -58,6 +63,7 @@ public class SiteSettingAdminController {
 	 * @return
 	 */
 	@GetMapping("/webTitleSuffix")
+	@ApiOperation("查询网页标题后缀")
 	public Result getWebTitleSuffix() {
 		return Result.ok("请求成功", siteSettingService.getWebTitleSuffix());
 	}

@@ -1,6 +1,8 @@
 package top.naccl.controller;
 
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import top.naccl.util.JwtUtils;
  * @Date: 2020-08-25
  */
 @RestController
+@Api(tags = "front-动态")
 public class MomentController {
 	@Autowired
 	MomentService momentService;
@@ -41,6 +44,7 @@ public class MomentController {
 	 */
 	@VisitLogger(VisitBehavior.MOMENT)
 	@GetMapping("/moments")
+	@ApiOperation("获取动态的分页列表数据")
 	public Result moments(@RequestParam(defaultValue = "1") Integer pageNum,
 	                      @RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
 		boolean adminIdentity = false;
@@ -74,6 +78,7 @@ public class MomentController {
 	@AccessLimit(seconds = 86400, maxCount = 1, msg = "不可以重复点赞哦")
 	@VisitLogger(VisitBehavior.LIKE_MOMENT)
 	@PostMapping("/moment/like/{id}")
+	@ApiOperation("限制动态的点赞（不能进行重复点赞）")
 	public Result like(@PathVariable Long id) {
 		momentService.addLikeByMomentId(id);
 		return Result.ok("点赞成功");

@@ -6,7 +6,7 @@
 			<el-button class="m-small" size="mini" type="primary" @click="$store.commit(SET_PARENT_COMMENT_ID, -1)" v-show="parentCommentId!==-1">取消回复</el-button>
 		</h3>
 		<el-form :inline="true" :model="commentForm" :rules="formRules" ref="formRef" size="small">
-			<el-input :class="'textarea'" type="textarea" :rows="5" v-model="commentForm.content" placeholder="评论千万条，友善第一条"
+			<el-input :class="'textarea'" type="textarea" :rows="5" v-model="commentForm.content" placeholder="没什么想说的话，就推荐一首歌吧！！！"
 			          maxlength="250" show-word-limit :validate-event="false"></el-input>
 			<div class="el-form-item el-form-item--small emoji">
 				<img src="https://fastly.jsdelivr.net/gh/Naccl/blog-resource/img/paopao/1.png" @click="showEmojiBox">

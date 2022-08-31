@@ -1,5 +1,6 @@
 package top.naccl.util.upload.channel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.UUID;
  */
 @Lazy
 @Component
+@Slf4j
 public class LocalChannel implements FileUploadChannel {
 	@Autowired
 	private BlogProperties blogProperties;
@@ -35,6 +37,8 @@ public class LocalChannel implements FileUploadChannel {
 	@Override
 	public String upload(UploadUtils.ImageResource image) throws Exception {
 		File folder = new File(uploadProperties.getPath());
+		log.info("当前的路径是 --> " + uploadProperties.getPath());
+		System.out.println("uploadProperties.getPath() = " + uploadProperties.getPath());
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}

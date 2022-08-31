@@ -1,5 +1,7 @@
 package top.naccl.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,7 @@ import top.naccl.service.BlogService;
  * @Date: 2020-08-19
  */
 @RestController
+@Api(tags = "front-分类")
 public class CategoryController {
 	@Autowired
 	BlogService blogService;
@@ -30,6 +33,7 @@ public class CategoryController {
 	 */
 	@VisitLogger(VisitBehavior.CATEGORY)
 	@GetMapping("/category")
+	@ApiOperation("根据分类name分页查询公开博客列表")
 	public Result category(@RequestParam String categoryName,
 	                       @RequestParam(defaultValue = "1") Integer pageNum) {
 		PageResult<BlogInfo> pageResult = blogService.getBlogInfoListByCategoryNameAndIsPublished(categoryName, pageNum);

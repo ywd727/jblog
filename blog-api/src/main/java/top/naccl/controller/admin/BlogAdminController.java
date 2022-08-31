@@ -1,8 +1,12 @@
 package top.naccl.controller.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +22,7 @@ import top.naccl.service.CategoryService;
 import top.naccl.service.CommentService;
 import top.naccl.service.TagService;
 import top.naccl.util.StringUtils;
+import top.naccl.util.upload.file.FileUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -31,6 +36,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-博客管理-文章接口")
 public class BlogAdminController {
 	@Autowired
 	BlogService blogService;
@@ -51,6 +57,7 @@ public class BlogAdminController {
 	 * @return
 	 */
 	@GetMapping("/blogs")
+	@ApiOperation("博客文章-文章列表的获取")
 	public Result blogs(@RequestParam(defaultValue = "") String title,
 	                    @RequestParam(defaultValue = "") Integer categoryId,
 	                    @RequestParam(defaultValue = "1") Integer pageNum,
@@ -73,6 +80,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("删除博客")
 	@DeleteMapping("/blog")
+	@ApiOperation("博客文章-根据id删除文章")
 	public Result delete(@RequestParam Long id) {
 		blogService.deleteBlogTagByBlogId(id);
 		blogService.deleteBlogById(id);
@@ -86,6 +94,7 @@ public class BlogAdminController {
 	 * @return
 	 */
 	@GetMapping("/categoryAndTag")
+	@ApiOperation("博客文章-根据id删除文章")
 	public Result categoryAndTag() {
 		List<Category> categories = categoryService.getCategoryList();
 		List<Tag> tags = tagService.getTagList();
@@ -104,6 +113,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("更新博客置顶状态")
 	@PutMapping("/blog/top")
+	@ApiOperation("博客文章-更新博客的置顶状态")
 	public Result updateTop(@RequestParam Long id, @RequestParam Boolean top) {
 		blogService.updateBlogTopById(id, top);
 		return Result.ok("操作成功");
@@ -118,6 +128,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("更新博客推荐状态")
 	@PutMapping("/blog/recommend")
+	@ApiOperation("博客文章-更新博客的推荐状态")
 	public Result updateRecommend(@RequestParam Long id, @RequestParam Boolean recommend) {
 		blogService.updateBlogRecommendById(id, recommend);
 		return Result.ok("操作成功");
@@ -132,6 +143,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("更新博客可见性状态")
 	@PutMapping("blog/{id}/visibility")
+	@ApiOperation("博客文章-更新博客的可见性状态")
 	public Result updateVisibility(@PathVariable Long id, @RequestBody BlogVisibility blogVisibility) {
 		blogService.updateBlogVisibilityById(id, blogVisibility);
 		return Result.ok("操作成功");
@@ -144,21 +156,10 @@ public class BlogAdminController {
 	 * @return
 	 */
 	@GetMapping("/blog")
+	@ApiOperation("博客文章-根据id获取博客的内容")
 	public Result getBlog(@RequestParam Long id) {
 		Blog blog = blogService.getBlogById(id);
 		return Result.ok("获取成功", blog);
-	}
-
-	/**
-	 * 保存草稿或发布新文章
-	 *
-	 * @param blog 博客文章DTO
-	 * @return
-	 */
-	@OperationLogger("发布博客")
-	@PostMapping("/blog")
-	public Result saveBlog(@RequestBody top.naccl.model.dto.Blog blog) {
-		return getResult(blog, "save");
 	}
 
 	/**
@@ -169,8 +170,9 @@ public class BlogAdminController {
 	 */
 	@ResponseBody
 	@RequestMapping("/uploadImg")
+	@ApiOperation("博客文章-上传图片并进行回显")
 	public Result uploadImg(HttpServletRequest request,
-										@RequestParam(value = "editormd-image-file", required = false) MultipartFile file){
+							@RequestParam(value = "editormd-image-file", required = false) MultipartFile file){
 		Map<String,Object> map = new HashMap<>();
 		if (file != null){
 			//获取此项目的tomcat路径
@@ -203,6 +205,19 @@ public class BlogAdminController {
 	}
 
 	/**
+	 * 保存草稿或发布新文章
+	 *
+	 * @param blog 博客文章DTO
+	 * @return
+	 */
+	@OperationLogger("发布博客")
+	@PostMapping("/blog")
+	@ApiOperation("博客文章-发布新的文章或则保存博客的草稿")
+	public Result saveBlog(@RequestBody top.naccl.model.dto.Blog blog) {
+		return getResult(blog, "save");
+	}
+
+	/**
 	 * 更新博客
 	 *
 	 * @param blog 博客文章DTO
@@ -210,6 +225,7 @@ public class BlogAdminController {
 	 */
 	@OperationLogger("更新博客")
 	@PutMapping("/blog")
+	@ApiOperation("博客文章-更新博客")
 	public Result updateBlog(@RequestBody top.naccl.model.dto.Blog blog) {
 		return getResult(blog, "update");
 	}
@@ -271,6 +287,8 @@ public class BlogAdminController {
 				return Result.error("标签不正确");
 			}
 		}
+
+		//将文章中的图片进行保存
 
 		Date date = new Date();
 		if (blog.getReadTime() == null || blog.getReadTime() < 0) {

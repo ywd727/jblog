@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin")
+@Api("back-博客管理-博客文章评论接口")
 public class CommentAdminController {
 	@Autowired
 	CommentService commentService;
@@ -43,6 +46,7 @@ public class CommentAdminController {
 	 * @return
 	 */
 	@GetMapping("/comments")
+	@ApiOperation("博客文章评论-获取该篇博客文章的评论列表")
 	public Result comments(@RequestParam(defaultValue = "") Integer page,
 	                       @RequestParam(defaultValue = "") Long blogId,
 	                       @RequestParam(defaultValue = "1") Integer pageNum,
@@ -60,6 +64,7 @@ public class CommentAdminController {
 	 * @return
 	 */
 	@GetMapping("/blogIdAndTitle")
+	@ApiOperation("博客文章评论-获取所有博客的id和title")
 	public Result blogIdAndTitle() {
 		List<Blog> blogs = blogService.getIdAndTitleList();
 		return Result.ok("请求成功", blogs);
@@ -74,6 +79,7 @@ public class CommentAdminController {
 	 */
 	@OperationLogger("更新评论公开状态")
 	@PutMapping("/comment/published")
+	@ApiOperation("博客文章评论-获取评论的公开状态")
 	public Result updatePublished(@RequestParam Long id, @RequestParam Boolean published) {
 		commentService.updateCommentPublishedById(id, published);
 		return Result.ok("操作成功");
@@ -88,6 +94,7 @@ public class CommentAdminController {
 	 */
 	@OperationLogger("更新评论邮件提醒状态")
 	@PutMapping("/comment/notice")
+	@ApiOperation("博客文章评论-更新评论接收邮件的提醒状态")
 	public Result updateNotice(@RequestParam Long id, @RequestParam Boolean notice) {
 		commentService.updateCommentNoticeById(id, notice);
 		return Result.ok("操作成功");
@@ -101,6 +108,7 @@ public class CommentAdminController {
 	 */
 	@OperationLogger("删除评论")
 	@DeleteMapping("/comment")
+	@ApiOperation("博客文章评论-根据id删除该评论及其子评论")
 	public Result delete(@RequestParam Long id) {
 		commentService.deleteCommentById(id);
 		return Result.ok("删除成功");
@@ -114,6 +122,7 @@ public class CommentAdminController {
 	 */
 	@OperationLogger("修改评论")
 	@PutMapping("/comment")
+	@ApiOperation("博客文章评论-修改评论")
 	public Result updateComment(@RequestBody Comment comment) {
 		if (StringUtils.isEmpty(comment.getNickname(), comment.getAvatar(), comment.getEmail(), comment.getIp(), comment.getContent())) {
 			return Result.error("参数有误");

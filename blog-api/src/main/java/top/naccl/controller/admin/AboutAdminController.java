@@ -1,5 +1,7 @@
 package top.naccl.controller.admin;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-页面管理-关于我的接口")
 public class AboutAdminController {
 	@Autowired
 	AboutService aboutService;
@@ -29,6 +32,7 @@ public class AboutAdminController {
 	 * @return
 	 */
 	@GetMapping("/about")
+	@ApiOperation("front-关于我-获取信息")
 	public Result about() {
 		return Result.ok("请求成功", aboutService.getAboutSetting());
 	}
@@ -41,6 +45,7 @@ public class AboutAdminController {
 	 */
 	@OperationLogger("修改关于我页面")
 	@PutMapping("/about")
+	@ApiOperation("关于我-修改信息")
 	public Result updateAbout(@RequestBody Map<String, String> map) {
 		aboutService.updateAbout(map);
 		return Result.ok("修改成功");

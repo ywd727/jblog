@@ -1,6 +1,8 @@
 package top.naccl.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,7 @@ import java.util.Map;
  * @Date: 2020-09-02
  */
 @RestController
+@Api(tags = "front-登录")
 public class LoginController {
 	@Autowired
 	UserService userService;
@@ -52,6 +55,7 @@ public class LoginController {
 	 * @return
 	 */
 	@PostMapping("/login")
+	@ApiOperation("登录接口")
 	public Result login(@RequestBody LoginInfo loginInfo) {
 		User user = userService.findUserByUsernameAndPassword(loginInfo.getUsername(), loginInfo.getPassword());
 		if (!"ROLE_admin".equals(user.getRole())) {
@@ -69,7 +73,7 @@ public class LoginController {
 	}
 
 	@GetMapping(value = "/getCode", produces = "image/jpeg")
-//	@ApiOperation("获取验证码的接口")
+	@ApiOperation("获取验证码的接口")
 	public void getCode(HttpServletRequest request, HttpServletResponse response) {
 
 		// 定义response输出类型为image/jpeg类型

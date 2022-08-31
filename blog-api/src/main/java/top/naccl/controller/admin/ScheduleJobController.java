@@ -2,6 +2,8 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/admin")
+@Api(tags = "back-系统管理-定时任务")
 public class ScheduleJobController {
 	@Autowired
 	private ScheduleJobService scheduleJobService;
@@ -39,6 +42,7 @@ public class ScheduleJobController {
 	 * @return
 	 */
 	@GetMapping("/jobs")
+	@ApiOperation("查询定时任务的分页列表")
 	public Result jobs(@RequestParam(defaultValue = "1") Integer pageNum,
 	                   @RequestParam(defaultValue = "10") Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
@@ -54,6 +58,7 @@ public class ScheduleJobController {
 	 */
 	@OperationLogger("新建定时任务")
 	@PostMapping("/job")
+	@ApiOperation("新增定时任务")
 	public Result saveJob(@RequestBody ScheduleJob scheduleJob) {
 		scheduleJob.setStatus(false);
 		scheduleJob.setCreateTime(new Date());
@@ -70,6 +75,7 @@ public class ScheduleJobController {
 	 */
 	@OperationLogger("修改定时任务")
 	@PutMapping("/job")
+	@ApiOperation("修改定时任务")
 	public Result updateJob(@RequestBody ScheduleJob scheduleJob) {
 		scheduleJob.setStatus(false);
 		ValidatorUtils.validateEntity(scheduleJob);
@@ -85,6 +91,7 @@ public class ScheduleJobController {
 	 */
 	@OperationLogger("删除定时任务")
 	@DeleteMapping("/job")
+	@ApiOperation("删除定时任务")
 	public Result deleteJob(@RequestParam Long jobId) {
 		scheduleJobService.deleteJobById(jobId);
 		return Result.ok("删除成功");
@@ -98,6 +105,7 @@ public class ScheduleJobController {
 	 */
 	@OperationLogger("立即执行定时任务")
 	@PostMapping("/job/run")
+	@ApiOperation("立即执行定时任务")
 	public Result runJob(@RequestParam Long jobId) {
 		scheduleJobService.runJobById(jobId);
 		return Result.ok("提交执行");
@@ -112,6 +120,7 @@ public class ScheduleJobController {
 	 */
 	@OperationLogger("更新任务状态")
 	@PutMapping("/job/status")
+	@ApiOperation("更新定时任务的状态")
 	public Result updateJobStatus(@RequestParam Long jobId, @RequestParam Boolean status) {
 		scheduleJobService.updateJobStatusById(jobId, status);
 		return Result.ok("更新成功");
@@ -126,6 +135,7 @@ public class ScheduleJobController {
 	 * @return
 	 */
 	@GetMapping("/job/logs")
+	@ApiOperation("按照执行时间查询定时任务列表")
 	public Result logs(@RequestParam(defaultValue = "") String[] date,
 	                   @RequestParam(defaultValue = "1") Integer pageNum,
 	                   @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -148,6 +158,7 @@ public class ScheduleJobController {
 	 * @return
 	 */
 	@DeleteMapping("/job/log")
+	@ApiOperation("按照id删除定时任务日志")
 	public Result delete(@RequestParam Long logId) {
 		scheduleJobService.deleteJobLogByLogId(logId);
 		return Result.ok("删除成功");
