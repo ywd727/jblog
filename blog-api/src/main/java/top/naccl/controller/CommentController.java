@@ -123,7 +123,7 @@ public class CommentController {
 	 */
 	@AccessLimit(seconds = 30, maxCount = 1, msg = "30秒内只能提交一次评论")
 	@PostMapping("/comment")
-	@ApiOperation("提交对博客的评论")
+	@ApiOperation("提交对博客的评论（30秒内只允许提交一次评论）")
 	public Result postComment(@RequestBody Comment comment,
 	                          HttpServletRequest request,
 	                          @RequestHeader(value = "Authorization", defaultValue = "") String jwt) {

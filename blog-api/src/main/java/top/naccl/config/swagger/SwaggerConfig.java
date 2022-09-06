@@ -43,7 +43,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(new ApiInfoBuilder()
-                        .title("博客后端接口地址")
+                        .title("blog-interface")
                         .description("创建这个swagger的目的是用来测试后端接口")
                         .version("1.0")
                         .contact(new Contact("jxx","blog.csdn.net","1134334153@qq.com"))

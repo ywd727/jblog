@@ -29,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin")
-@Api("back-博客管理-博客文章评论接口")
+@Api(tags = "back-博客管理-博客文章评论接口")
 public class CommentAdminController {
 	@Autowired
 	CommentService commentService;

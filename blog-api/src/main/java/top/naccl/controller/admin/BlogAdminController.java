@@ -11,6 +11,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.naccl.annotation.OperationLogger;
+import top.naccl.constant.BlogConstants;
 import top.naccl.entity.Blog;
 import top.naccl.entity.Category;
 import top.naccl.entity.Tag;
@@ -304,6 +305,12 @@ public class BlogAdminController {
 			user.setId(1L);//个人博客默认只有一个作者
 			blog.setUser(user);
 
+			int article = blog.getContent().length() + blog.getDescription().length();
+			//计算博客内容的长度，进行存储
+			blog.setWords(article);
+			//计算博客的阅读时长进行存储，最低的阅读时长设置为1分钟
+			blog.setReadTime(article / BlogConstants.READ_TIME_MARK + 1);
+
 			blogService.saveBlog(blog);
 			//关联博客和标签(维护 blog_tag 表)
 			for (Tag t : tags) {
@@ -312,6 +319,12 @@ public class BlogAdminController {
 			return Result.ok("添加成功");
 		} else {
 			blog.setUpdateTime(date);
+			int article = blog.getContent().length() + blog.getDescription().length();
+			//计算博客内容的长度，进行存储
+			blog.setWords(article);
+			//计算博客的阅读时长进行存储，最低的阅读时长设置为1分钟
+			blog.setReadTime(article / BlogConstants.READ_TIME_MARK);
+
 			blogService.updateBlog(blog);
 			//关联博客和标签(维护 blog_tag 表)
 			blogService.deleteBlogTagByBlogId(blog.getId());

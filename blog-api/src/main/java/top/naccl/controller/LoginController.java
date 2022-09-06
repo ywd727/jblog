@@ -54,7 +54,7 @@ public class LoginController {
 	 * @param loginInfo
 	 * @return
 	 */
-	@PostMapping("/login")
+	@PostMapping("/login/login")
 	@ApiOperation("登录接口")
 	public Result login(@RequestBody LoginInfo loginInfo) {
 		User user = userService.findUserByUsernameAndPassword(loginInfo.getUsername(), loginInfo.getPassword());

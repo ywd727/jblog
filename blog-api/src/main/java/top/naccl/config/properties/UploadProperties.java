@@ -24,10 +24,17 @@ public class UploadProperties {
 	 * 本地文件路径
 	 */
 	private String path;
+
+	/**
+	 * 图片地址的映射
+	 */
+//	private String imgPath;
+
 	/**
 	 * 请求地址映射
 	 */
 	private String accessPath;
+
 	/**
 	 * 本地文件路径映射
 	 */

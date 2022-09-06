@@ -32,8 +32,17 @@ public class Result {
 		this.data = data;
 	}
 
+	public Result(Integer code, Object data) {
+		this.code = code;
+		this.data = data;
+	}
+
 	public static Result ok(String msg, Object data) {
 		return new Result(200, msg, data);
+	}
+
+	public static Result ok(Object data) {
+		return new Result(200, data);
 	}
 
 	public static Result ok(String msg) {

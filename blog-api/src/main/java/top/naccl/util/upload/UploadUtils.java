@@ -2,6 +2,8 @@ package top.naccl.util.upload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
@@ -37,10 +39,22 @@ public class UploadUtils {
 
 	@AllArgsConstructor
 	@Getter
+	@Setter
+	@NoArgsConstructor
 	public static class ImageResource {
+		//用来存放数据的
 		byte[] data;
+
 		//图片拓展名 jpg png
 		String type;
+
+		//文件的原名称
+		String originalFilename;
+
+		public ImageResource(byte[] data, String type) {
+			this.data = data;
+			this.type = type;
+		}
 	}
 
 	/**

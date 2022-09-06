@@ -21,7 +21,7 @@ import top.naccl.service.LoginLogService;
  */
 @RestController
 @RequestMapping("/admin")
-@Api("back-日志管理-登录日志")
+@Api(tags = "back-日志管理-登录日志")
 public class LoginLogController {
 	@Autowired
 	LoginLogService loginLogService;

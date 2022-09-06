@@ -6,10 +6,19 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import top.naccl.config.properties.BlogProperties;
 import top.naccl.config.properties.UploadProperties;
+import top.naccl.entity.ExhibitUploadFile;
+import top.naccl.model.vo.Result;
+import top.naccl.service.ExhibitUploadFileService;
 import top.naccl.util.upload.UploadUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -27,6 +36,10 @@ public class LocalChannel implements FileUploadChannel {
 	@Autowired
 	private UploadProperties uploadProperties;
 
+	@Resource
+	private ExhibitUploadFileService exhibitUploadFileService;
+
+
 	/**
 	 * 将图片保存到本地，并返回访问本地图片的URL
 	 *
@@ -37,8 +50,6 @@ public class LocalChannel implements FileUploadChannel {
 	@Override
 	public String upload(UploadUtils.ImageResource image) throws Exception {
 		File folder = new File(uploadProperties.getPath());
-		log.info("当前的路径是 --> " + uploadProperties.getPath());
-		System.out.println("uploadProperties.getPath() = " + uploadProperties.getPath());
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}
@@ -46,6 +57,45 @@ public class LocalChannel implements FileUploadChannel {
 		FileOutputStream fileOutputStream = new FileOutputStream(uploadProperties.getPath() + fileName);
 		fileOutputStream.write(image.getData());
 		fileOutputStream.close();
+
 		return blogProperties.getApi() + "/image/" + fileName;
+	}
+
+	/**
+	 *
+	 * @param file
+	 * @param fileName
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public Result upload(UploadUtils.ImageResource file, String fileName) throws IOException {
+
+		String uploadUrl = blogProperties.getApi() + "/image/" + fileName;
+
+		//进行查重，如果数据库中存在该文件的路径名，那么就报错
+		if (exhibitUploadFileService.checkDuplicates(uploadUrl)) {
+			return Result.error("该文件名称已存在，请重新命名");
+		}
+
+		File folder = new File(uploadProperties.getPath());
+
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+
+		String uploadFileName = fileName + file.getType();
+		String uploadOriginalFileName = file.getOriginalFilename();
+		FileOutputStream fileOutputStream = new FileOutputStream(uploadProperties.getPath() + fileName + file.getType());
+		fileOutputStream.write(file.getData());
+		fileOutputStream.close();
+
+		ExhibitUploadFile exhibitUploadFile = new ExhibitUploadFile();
+		exhibitUploadFile.setUploadFileName(uploadFileName);
+		exhibitUploadFile.setUploadOriginalFileName(uploadOriginalFileName);
+		exhibitUploadFile.setUploadUrl(uploadUrl);
+		exhibitUploadFile.setCreatedDate(LocalDateTime.now());
+		exhibitUploadFileService.save(exhibitUploadFile);
+
+		return Result.ok("上传成功", uploadUrl);
 	}
 }

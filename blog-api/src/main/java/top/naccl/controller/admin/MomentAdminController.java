@@ -27,7 +27,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/admin")
-@Api("back-博客管理-动态管理")
+@Api(tags = "back-博客管理-动态管理")
 public class MomentAdminController {
 	@Autowired
 	MomentService momentService;
