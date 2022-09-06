@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.naccl.mapper.ExhibitUploadFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.naccl.entity.ExhibitUploadFile">
+        <id column="id" property="id" />
+        <result column="upload_url" property="uploadUrl" />
+        <result column="created_date" property="createdDate" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_date" property="updatedDate" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="deleted" property="deleted" />
+        <result column="version" property="version" />
+        <result column="upload_file_name" property="uploadFileName" />
+        <result column="upload_original_file_name" property="uploadOriginalFileName" />
+    </resultMap>
+
+</mapper>
