@@ -3,7 +3,7 @@
 <mapper namespace="top.naccl.mapper.ExhibitUploadFileMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="top.naccl.entity.ExhibitUploadFile">
+    <resultMap id="BaseResultMap" type="top.jxx.entity.ExhibitUploadFile">
         <id column="id" property="id" />
         <result column="upload_url" property="uploadUrl" />
         <result column="created_date" property="createdDate" />
