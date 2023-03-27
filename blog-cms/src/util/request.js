@@ -4,8 +4,8 @@ import 'nprogress/nprogress.css'
 import {Message} from 'element-ui'
 
 const request = axios.create({
-	// baseURL: 'http://81.68.124.95:8090/admin/',
-	baseURL: 'http://localhost:8090/admin/',
+	baseURL: 'http://81.68.124.95:8090/admin/',
+	// baseURL: 'http://localhost:8090/admin/',
 	timeout: 5000
 })
 
@@ -40,7 +40,9 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use(response => {
 		NProgress.done()
 		const res = response.data
+
 		if (res.code !== 200) {
+			console.log("创建的测试" + JSON.stringify(response.data))
 			let msg = res.msg || 'Error'
 			Message.error(msg)
 			return Promise.reject(new Error(msg))

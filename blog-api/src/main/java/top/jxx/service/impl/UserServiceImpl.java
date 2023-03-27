@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import top.jxx.exception.NotFoundException;
 import top.jxx.mapper.UserMapper;
 import top.jxx.entity.User;
+import top.jxx.model.vo.Result;
 import top.jxx.service.UserService;
 import top.jxx.util.HashUtils;
 
@@ -49,5 +50,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throw new NotFoundException("用户不存在");
 		}
 		return user;
+	}
+
+	@Override
+	public Result register() {
+		return null;
+	}
+
+	@Override
+	public Result login() {
+		return null;
 	}
 }

@@ -51,6 +51,9 @@ public class UploadUtils {
 		//文件的原名称
 		String originalFilename;
 
+		// 文件的原始数据类型
+		String originalType;
+
 		public ImageResource(byte[] data, String type) {
 			this.data = data;
 			this.type = type;

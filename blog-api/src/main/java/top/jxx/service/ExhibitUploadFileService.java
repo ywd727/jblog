@@ -24,4 +24,6 @@ public interface ExhibitUploadFileService extends IService<ExhibitUploadFile> {
     Boolean deleteById(String id);
 
     ExhibitUploadFile queryById(String id);
+
+    ExhibitUploadFile getInfoByUploadUrl(String url);
 }

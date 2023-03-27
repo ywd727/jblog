@@ -1,4 +1,4 @@
-package top.jxx.controller;
+package top.jxx.controller.upload;
 
 
 import io.swagger.annotations.Api;
@@ -41,6 +41,13 @@ public class ExhibitUploadFileController {
                            @RequestBody ExhibitUploadFile exhibitUploadFile){
 
         return Result.ok("msg", exhibitUploadFileService.paginate(startPage, pageSize, exhibitUploadFile));
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("列表查询")
+    public Result list(){
+
+        return Result.ok("msg", exhibitUploadFileService.list());
     }
 
     /**
@@ -88,6 +95,13 @@ public class ExhibitUploadFileController {
     public Boolean checkDuplicates(@PathVariable("uploadUrl") String uploadUrl) {
 
         return exhibitUploadFileService.checkDuplicates(uploadUrl);
+    }
+
+    @GetMapping("/getInfoByUploadUrl/{url}")
+    @ApiOperation("通过返回的上传路径获取对应的上传信息")
+    public Result getInfoByUploadUrl(@PathVariable("url") String url) {
+
+        return Result.ok(exhibitUploadFileService.getInfoByUploadUrl(url));
     }
 
 }

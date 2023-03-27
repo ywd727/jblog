@@ -68,7 +68,7 @@ public class LocalChannel implements FileUploadChannel {
 	 */
 	public Result upload(UploadUtils.ImageResource file, String fileName) throws IOException {
 
-		String uploadUrl = blogProperties.getApi() + "/image/" + fileName;
+		String uploadUrl = blogProperties.getApi() + "/image/" + fileName + file.getType();
 
 		//进行查重，如果数据库中存在该文件的路径名，那么就报错
 		if (exhibitUploadFileService.checkDuplicates(uploadUrl)) {
@@ -92,6 +92,8 @@ public class LocalChannel implements FileUploadChannel {
 		exhibitUploadFile.setUploadOriginalFileName(uploadOriginalFileName);
 		exhibitUploadFile.setUploadUrl(uploadUrl);
 		exhibitUploadFile.setCreatedDate(LocalDateTime.now());
+		exhibitUploadFile.setUploadFileType(file.getType());
+		exhibitUploadFile.setUploadOriginalFileType(file.getOriginalType());
 		exhibitUploadFileService.save(exhibitUploadFile);
 
 		return Result.ok("上传成功", uploadUrl);

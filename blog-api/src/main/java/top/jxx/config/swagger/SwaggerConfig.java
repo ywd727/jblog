@@ -39,7 +39,7 @@ public class SwaggerConfig {
     Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("top.naccl"))//扫描那些包，为这些包创建相关的测试接口
+                .apis(RequestHandlerSelectors.basePackage("top.jxx"))//扫描那些包，为这些包创建相关的测试接口
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(new ApiInfoBuilder()

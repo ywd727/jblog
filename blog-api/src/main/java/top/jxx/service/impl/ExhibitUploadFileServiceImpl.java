@@ -54,6 +54,17 @@ public class ExhibitUploadFileServiceImpl extends ServiceImpl<ExhibitUploadFileM
     @Override
     public ExhibitUploadFile queryById(String id) {
 
-        return lambdaQuery().eq(ExhibitUploadFile::getId, id).one();
+        return lambdaQuery()
+                    .eq(ExhibitUploadFile::getId, id)
+                .one();
+    }
+
+    @Override
+    public ExhibitUploadFile getInfoByUploadUrl(String url) {
+
+        return lambdaQuery()
+                    .eq(ExhibitUploadFile::getUploadUrl, url)
+                .one();
+
     }
 }

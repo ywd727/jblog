@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -72,6 +73,14 @@ public class ExhibitUploadFile implements Serializable {
     @ApiModelProperty("文件的原始名称")
     @TableField("upload_original_file_name")
     private String uploadOriginalFileName;
+
+    @ApiModelProperty("上传文件的最初类型（通过自带api进行获取的）")
+    @TableField("upload_original_file_type")
+    private String uploadOriginalFileType;
+
+    @ApiModelProperty("上传文件的类型（通过截取文件后缀名进行获取的）")
+    @TableField("upload_file_type")
+    private String uploadFileType;
 
     @Override
     public String toString() {

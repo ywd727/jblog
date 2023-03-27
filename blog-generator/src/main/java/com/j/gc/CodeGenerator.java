@@ -23,7 +23,7 @@ public class CodeGenerator {
 
         //创建一个集合，用来存储需要进行生成代码的表
         List<String> tables = new ArrayList<>();
-        tables.add("blog_exhibit_upload_file");
+        tables.add("blog_link_conversion");
 
         //create中用来书写数据库的配置信息
         FastAutoGenerator.create("jdbc:mysql://81.68.124.95:3306/nblog?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai","root","162172jxx666")
@@ -37,11 +37,11 @@ public class CodeGenerator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("top")//设置父报名
-                            .moduleName("naccl")//设置父包模块名
+                            .moduleName("jxx")//设置父包模块名
                             .entity("entity")//设置实体类生成的位置
                             .service("service")//设置服务层生成的位置
                             .serviceImpl("service.impl")//设置服务层实现类生成的位置
-                            .controller("controller")//设置控制层生成的位置
+                            .controller("controller.tool")//设置控制层生成的位置
                             .mapper("mapper")//设置持久层生成的位置
 //                            .xml("mapper")//因为xml一般是放在resource文件夹下，所以需要特殊指定下
                             .pathInfo(Collections.singletonMap(OutputFile.mapperXml,System.getProperty("user.dir")+"\\blog-api\\src\\main\\resources\\mapper"));//设置xml文件生成位置

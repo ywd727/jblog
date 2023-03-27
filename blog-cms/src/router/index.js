@@ -219,6 +219,27 @@ const routes = [
 			},
 		]
 	},
+	{
+		path: '/tool',
+		name: 'Tool',
+		redirect: '/tool/all',
+		component: Layout,
+		meta: {title: '工具箱', icon: 'el-icon-place'},
+		children: [
+			{
+				path: 'upload',
+				name: 'Upload',
+				component: () => import('@/views/tool/LinkConversion'),
+				meta: {title: '文件的上传', icon: 'el-icon-upload2'}
+			},
+			{
+				path: 'demo',
+				name: 'Demo',
+				component: () => import('@/views/tool/demo'),
+				meta: {title: '用来进行测试的页面', icon: 'el-icon-loading'}
+			},
+		]
+	},
 
 	// 404 page must be placed at the end !!!
 	{path: '*', redirect: '/404', hidden: true}
